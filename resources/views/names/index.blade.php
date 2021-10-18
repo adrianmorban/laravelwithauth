@@ -34,7 +34,7 @@
                 <td>{{$row->lastname}}</td>
                 <td class="d-flex">
                     <a href="{{url('/names/'.$row->id.'/edit/')}}" class="mr-2">
-                        <button type="button" class="btn btn-primary">Editar</button>
+                        <i class="fas fa-user-edit"></i>
                     </a>
                     <form method="post" action="{{url('/names/'.$row->id)}}">
                         {{csrf_field()}}
@@ -56,7 +56,7 @@
                             </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Eliminar</button>
+                        <i data-toggle="modal" data-target="#exampleModalCenter" type="button" class="fas fa-user-slash" aria-hidden="true"></i>
                     </form>
                 </td>
             </tr>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\NamesController;
 use Illuminate\Support\Facades\Auth;
+use App\HTTP\Middleware\RemoveToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,6 +25,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('names', "NamesController")->middleware('auth');
-
-Route::get('/search', 'NamesController@search')->middleware('auth');
+Route::resource('names', "NamesController")->middleware(['auth','removetoken']);

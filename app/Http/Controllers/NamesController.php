@@ -12,20 +12,21 @@ class NamesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $datos["names"] = names::paginate(5);
+        if($request){
+            $search = $request->input('query');
+            $datos["names"] = names::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('lastname', 'LIKE', "%{$search}%")
+            ->paginate(5);
+        }
+        else{
+            $datos["names"] = names::paginate(5);
+        }
         return view('names.index', $datos);
     }
 
-    public function search(Request $request){
-        $search = $request->input('query');
-        $datos["names"] = names::query()
-        ->where('name', 'LIKE', "%{$search}%")
-        ->orWhere('lastname', 'LIKE', "%{$search}%")
-        ->paginate(5);
-        return view('names.index', $datos);
-    }
     /**
      * Show the form for creating a new resource.
      *

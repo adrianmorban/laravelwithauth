@@ -4,6 +4,8 @@
 // Variables
 @import 'variables';
 
+@import 'public';
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
@@ -12,6 +14,3 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
-i {
-    font-size: 2rem;
-}

@@ -1,5 +1,22 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
 
+i {
+  font-size: 1.25rem;
+}
+
+i.fas.fa-user-edit {
+  color: green;
+}
+
+i.fas.fa-user-slash {
+  color: red;
+}
+
+.search button,
+.form-control {
+  border-radius: 0px !important;
+}
+
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

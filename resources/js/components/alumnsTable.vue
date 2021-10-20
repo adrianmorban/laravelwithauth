@@ -27,7 +27,6 @@
     </form>
         <button v-on:click="initArray" type="submit" class="btn btn-primary">Limpiar busqueda</button>
     <a href="/names/create"><button type="button" class="btn btn-primary my-5">Crear nuevo nombre</button></a>
-    <button class="btn btn-primary">Crear varios a la vez</button>
     <table class="table table-hover table-bordered">
         <thead class="thead-light">
             <tr>

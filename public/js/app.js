@@ -2006,7 +2006,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'alumns-table',
@@ -46293,10 +46292,6 @@ var render = function() {
     ),
     _vm._v(" "),
     _vm._m(1),
-    _vm._v(" "),
-    _c("button", { staticClass: "btn btn-primary" }, [
-      _vm._v("Crear varios a la vez")
-    ]),
     _vm._v(" "),
     _c("table", { staticClass: "table table-hover table-bordered" }, [
       _vm._m(2),

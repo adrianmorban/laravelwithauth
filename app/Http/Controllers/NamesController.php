@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Names;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class NamesController extends Controller
 {
@@ -35,6 +37,29 @@ class NamesController extends Controller
     public function create()
     {
         return view('names.create');
+    }
+
+    public function updateName(Request $request){
+        try{
+            DB::transaction(function() {
+                DB::insert('INSERT INTO NAMES (name, lastname) VALUES ("ADRIAN", "Morban")');
+                DB::insert('INSERT INTO NAMES (name, lastname) VALUES ("ADRIAN", "Morban")');
+                DB::insert('INSERT INTO NAMES (name, lastname) VALUES ("ADRIAN", "Morban")');
+                return response()->json([
+                    "sucess" => true
+                ]);
+            });
+        }
+        catch(QueryException $e){
+            report($e);
+            $result = $e;
+            return response()->json($e);
+        }
+       
+    }
+
+    public function createMany(){
+        return view('names.createmany');
     }
 
     /**

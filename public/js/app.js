@@ -1909,7 +1909,6 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _clock_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clock.vue */ "./resources/js/components/clock.vue");
-/* harmony import */ var _alumnsTable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alumnsTable.vue */ "./resources/js/components/alumnsTable.vue");
 //
 //
 //
@@ -1925,16 +1924,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    clock: _clock_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    alumnsTable: _alumnsTable_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  mounted: function mounted() {
-    console.log('Component mounted.');
+    clock: _clock_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -2012,21 +2005,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'alumnsTable',
+  name: 'alumns-table',
   data: function data() {
     return {
       charging: true,
+      showModal: false,
       alumns: [],
       totalPages: 0,
-      inputQuery: ''
+      query: '',
+      deleteId: "",
+      deleteName: "",
+      deleteLastname: ""
     };
   },
   methods: {
+    deleteAlumn: function deleteAlumn(id) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/names/".concat(id));
+      $(this.$refs.vuemodal).modal('hide');
+      this.initArray();
+    },
+    confirmDelete: function confirmDelete(id, name, lastname) {
+      $(this.$refs.vuemodal).modal('show');
+      this.deleteId = id;
+      this.deleteName = name;
+      this.deleteLastname = lastname;
+      this.showModal = true;
+    },
     updateArray: function updateArray(arrayAlumns) {
       this.totalPages = arrayAlumns.names.last_page;
-      console.log(arrayAlumns);
       this.alumns = arrayAlumns.names.data;
     },
     search: function search() {
@@ -2035,12 +2045,12 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/names?query=".concat(this.query)).then(function (response) {
         _this.updateArray(response.data);
       });
-      this.inputQuery = this.query;
     },
     initArray: function initArray() {
       var _this2 = this;
 
-      this.inputQuery = '', axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/names?page=1').then(function (response) {
+      this.query = '';
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/names?page=1').then(function (response) {
         _this2.updateArray(response.data);
       });
     },
@@ -2048,18 +2058,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var route = "/api/names?page=".concat(page);
-      if (this.inputQuery) route = "/api/names?query=".concat(this.inputQuery, "&page=").concat(page);
+      if (this.query) route = "/api/names?query=".concat(this.query, "&page=").concat(page);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(route).then(function (response) {
         _this3.updateArray(response.data);
-      });
-    },
-    deleteAlumn: function deleteAlumn(id) {
-      var _this4 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/names/".concat(id)).then(function () {
-        $(_this4.$refs.vuemodal).modal('hide');
-
-        _this4.initArray();
       });
     }
   },
@@ -46127,12 +46128,7 @@ var render = function() {
             _vm._v("Example Component")
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-body" },
-            [_c("clock"), _vm._v(" "), _c("alumnsTable")],
-            1
-          )
+          _c("div", { staticClass: "card-body" }, [_c("clock")], 1)
         ])
       ])
     ])
@@ -46161,6 +46157,81 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
+    _vm.showModal
+      ? _c("div", [
+          _c(
+            "div",
+            {
+              ref: "vuemodal",
+              staticClass: "modal fade",
+              attrs: {
+                id: "exampleModalCenter",
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "exampleModalCenterTitle",
+                "aria-hidden": "true"
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "modal-dialog modal-dialog-centered",
+                  attrs: { role: "document" }
+                },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c("div", { staticClass: "modal-header" }, [
+                      _c(
+                        "h5",
+                        {
+                          staticClass: "modal-title",
+                          attrs: { id: "exampleModalLongTitle" }
+                        },
+                        [
+                          _vm._v(
+                            "¿Estás seguro de que quieres eliminar a " +
+                              _vm._s(_vm.deleteName) +
+                              " " +
+                              _vm._s(_vm.deleteLastname)
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteAlumn(_vm.deleteId)
+                            }
+                          }
+                        },
+                        [_vm._v("Eliminar")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          attrs: { type: "button", "data-dismiss": "modal" }
+                        },
+                        [_vm._v("Cerrar")]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("h1", { staticClass: "text-center my-5" }, [_vm._v("Lista de nombres")]),
     _vm._v(" "),
     _c(
@@ -46221,124 +46292,54 @@ var render = function() {
       [_vm._v("Limpiar busqueda")]
     ),
     _vm._v(" "),
-    _vm._m(0),
+    _vm._m(1),
     _vm._v(" "),
-    _c(
-      "table",
-      { staticClass: "table table-hover table-bordered" },
-      [
-        _vm._m(1),
-        _vm._v(" "),
+    _c("button", { staticClass: "btn btn-primary" }, [
+      _vm._v("Crear varios a la vez")
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-hover table-bordered" }, [
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "tbody",
         _vm._l(_vm.alumns, function(alumn) {
-          return _c("tbody", { key: alumn.id }, [
-            _c("tr", [
-              _c("td", [_vm._v(_vm._s(alumn.name))]),
+          return _c("tr", { key: alumn.id, attrs: { autofocus: "" } }, [
+            _c("td", [_vm._v(_vm._s(alumn.name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(alumn.lastname))]),
+            _vm._v(" "),
+            _c("td", { staticClass: "d-flex" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "mr-2",
+                  attrs: { href: "/names/" + alumn.id + "/edit" }
+                },
+                [_c("i", { staticClass: "fas fa-user-edit" })]
+              ),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(alumn.lastname))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "d-flex" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "mr-2",
-                    attrs: { href: "/names/" + alumn.id + "/edit" }
-                  },
-                  [_c("i", { staticClass: "fas fa-user-edit" })]
-                ),
-                _vm._v(" "),
-                _c("div", [
-                  _c(
-                    "div",
-                    {
-                      ref: "vuemodal",
-                      refInFor: true,
-                      staticClass: "modal fade",
-                      attrs: {
-                        id: "exampleModalCenter",
-                        tabindex: "-1",
-                        role: "dialog",
-                        "aria-labelledby": "exampleModalCenterTitle",
-                        "aria-hidden": "true"
-                      }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "modal-dialog modal-dialog-centered",
-                          attrs: { role: "document" }
-                        },
-                        [
-                          _c("div", { staticClass: "modal-content" }, [
-                            _c("div", { staticClass: "modal-header" }, [
-                              _c(
-                                "h5",
-                                {
-                                  staticClass: "modal-title",
-                                  attrs: { id: "exampleModalLongTitle" }
-                                },
-                                [
-                                  _vm._v(
-                                    "¿Estás seguro de que quieres eliminar a " +
-                                      _vm._s(alumn.name) +
-                                      " " +
-                                      _vm._s(alumn.lastname)
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _vm._m(2, true)
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "modal-footer" }, [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-danger",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deleteAlumn(alumn.id)
-                                    }
-                                  }
-                                },
-                                [_vm._v("Eliminar")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-secondary",
-                                  attrs: {
-                                    type: "button",
-                                    "data-dismiss": "modal"
-                                  }
-                                },
-                                [_vm._v("Cerrar")]
-                              )
-                            ])
-                          ])
-                        ]
+              _c("div", [
+                _c("i", {
+                  staticClass: "fas fa-user-slash",
+                  attrs: { type: "button", "aria-hidden": "true" },
+                  on: {
+                    click: function($event) {
+                      return _vm.confirmDelete(
+                        alumn.id,
+                        alumn.name,
+                        alumn.lastname
                       )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("i", {
-                    staticClass: "fas fa-user-slash",
-                    attrs: {
-                      "data-toggle": "modal",
-                      "data-target": "#exampleModalCenter",
-                      type: "button",
-                      "aria-hidden": "true"
                     }
-                  })
-                ])
+                  }
+                })
               ])
             ])
           ])
-        })
-      ],
-      2
-    ),
+        }),
+        0
+      )
+    ]),
     _vm._v(" "),
     _c("nav", { attrs: { "aria-label": "..." } }, [
       _c(
@@ -46371,6 +46372,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("a", { attrs: { href: "/names/create" } }, [
       _c(
         "button",
@@ -46392,23 +46410,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Acción")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: {
-          type: "button",
-          "data-dismiss": "modal",
-          "aria-label": "Close"
-        }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
   }
 ]
 render._withStripped = true

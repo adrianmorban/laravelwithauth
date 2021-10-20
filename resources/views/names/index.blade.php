@@ -2,7 +2,7 @@
 
 @section('content')
 <example-component></example-component>
-<alumnsTable></alumnsTable>
+<alumns-table></alumns-table>
 <div class="container">  
 </div>
 @endsection

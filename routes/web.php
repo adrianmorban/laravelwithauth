@@ -25,4 +25,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('names/update', 'NamesController@updateName')->middleware(['auth','removetoken']);
+
 Route::resource('names', "NamesController")->middleware(['auth','removetoken']);
